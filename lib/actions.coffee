@@ -1004,9 +1004,12 @@ module.exports = (env) ->
         if simulate
           __("would set temp of %s to %s°C", @device.name, value)
         else
-          @device.changeTemperatureTo(value).then( => 
-            __("set temp of %s to %s°C", @device.name, value) 
-          )
+          if @device.getMode() is not "auto"
+            @device.changeTemperatureTo(value).then( => 
+              __("set temp of %s to %s°C", @device.name, value) 
+            )
+          else 
+            __("temp of %s wasn´t set to %s°C because device is in auto mode",@device.name,value) 
       )
 
     # ### executeAction()
